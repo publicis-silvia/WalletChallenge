@@ -1,14 +1,12 @@
 package hello.demo.controller;
 
-import java.util.List;
-
 import hello.demo.entity.Person;
-import hello.demo.exceptions.PersonNotFoundException;
 import hello.demo.repository.PersonRepository;
 import hello.demo.service.PersonService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class PersonController {
@@ -22,55 +20,71 @@ public class PersonController {
         this.service = service;
     }
 
-    @GetMapping("/")
-    public String list(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-                       @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model) {
-        model.addAttribute("employees", service.getPeople(pageNumber, size));
+    @GetMapping("/getPeople")
+    public String list(Model model) {
+        model.addAttribute("people", service.getPeople());
 
-        return "index";
+        return "people";
     }
 
-    @GetMapping("/getPeople")
-    List<Person> all() {
-        return repository.findAll();
+    @GetMapping("/redirectAddPersonPage")
+    public String list2(Model model) {
+        model.addAttribute("person", new Person());
+        return "addPerson";
     }
 
 
     @PostMapping("/postPerson")
-    Person addPerson(@RequestBody Person newPerson) {
-        return repository.save(newPerson);
+    public String addPerson(@ModelAttribute Person newPerson, Model model) {
+        repository.save(newPerson);
+        model.addAttribute("people", service.getPeople());
+
+        return "redirect:/getPeople";
     }
 
-    // Single item
+    @GetMapping("/getPerson")
+    public ModelAndView getPerson(@RequestParam Long personId) {
+        ModelAndView mav = null;
+        Person person = repository.findById(personId).get();
+        if(person.getWallet() != null){
+            mav = new ModelAndView("showPersonWallet");
+            mav.addObject("wallet", person.getWallet());
+        }else{
+            mav = new ModelAndView("showPerson");
+        }
 
-    @GetMapping("/getPerson/{id}")
-    Person one(@PathVariable Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new PersonNotFoundException(id));
+        mav.addObject("person", person);
+        return mav;
     }
 
-    @PutMapping("/putPerson/{id}")
-    Person replacePerson(@RequestBody Person newPerson, @PathVariable Long id) {
+    @GetMapping("/putPerson")
+    public String replacePerson(@ModelAttribute Person updatedPerson, Model model) {
 
-        return repository.findById(id)
+        repository.findById(updatedPerson.getId())
                 .map(person -> {
-                    person.setName(newPerson.getName());
+                    person.setName(updatedPerson.getName());
+                    person.setBirthday(updatedPerson.getBirthday());
                     return repository.save(person);
-                })
-                .orElseGet(() -> {
-                    newPerson.setId(id);
-                    return repository.save(newPerson);
                 });
+
+        model.addAttribute("people", service.getPeople());
+        return "redirect:/getPeople";
+    }
+    @GetMapping("/showUpdateFormPerson")
+    public ModelAndView showUpdateFormPerson(@RequestParam Long personId) {
+        ModelAndView mav = new ModelAndView("updatePerson");
+        Person person = repository.findById(personId).get();
+        mav.addObject("person", person);
+        return mav;
     }
 
-    @DeleteMapping("/deletePerson")
-    String deletePerson(@ModelAttribute(value="person") Person person, @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-                      @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model) {
+    @GetMapping("/deletePerson")
+    public String deletePerson(@RequestParam Long personId, Model model) {
 
-        repository.deleteById(person.getId());
-        model.addAttribute("people", service.getPeople(pageNumber, size));
+        repository.deleteById(personId);
+        model.addAttribute("people", service.getPeople());
 
 
-        return "redirect:index";
+        return "redirect:/getPeople";
     }
 }

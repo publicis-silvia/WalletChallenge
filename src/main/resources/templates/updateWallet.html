@@ -43,33 +43,33 @@
     </div>
 </nav>
 <div class="container">
-    <form class="form-horizontal" th:action="@{/postWallet}" th:object="${wallet}" method="post" >
+    <form class="form-horizontal" th:action="@{/putWallet}" th:object="${wallet}" method="put" >
         <fieldset>
 
             <!-- Form Name -->
             <legend>WALLET</legend>
 
             <!-- Text input-->
-            <div class="form-group" th:class="hidden">
-                <label class="col-md-4 control-label" for="personId">Name</label>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="id">ID</label>
                 <div class="col-md-4">
-                    <input readonly th:field="*{personId}" id="personId" name="personId" placeholder="personId" class="form-control input-md" required="true" type="number">
+                    <input readonly th:field="*{id}" id="id" name="name" placeholder="ID" class="form-control input-md" required="true" type="text">
                 </div>
             </div>
 
             <!-- Text input-->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="balance">Name</label>
+                <label class="col-md-4 control-label" for="balance">balance</label>
                 <div class="col-md-4">
-                    <input th:field="*{balance}" id="balance" name="balance" placeholder="Name" class="form-control input-md" required="true" type="number">
+                    <input th:field="*{balance}" id="balance" name="balance" placeholder="balance" class="form-control input-md" type="text">
                 </div>
             </div>
 
             <!-- Button -->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="addPerson">Add wallet to person</label>
+                <label class="col-md-4 control-label" for="updateWallet">Update wallet</label>
                 <div class="col-md-4">
-                    <button id="addPerson" name="addPerson" class="btn btn-primary">Add</button>
+                    <button id="updateWallet" name="updateWallet" class="btn btn-primary">Update</button>
                 </div>
             </div>
         </fieldset>

@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "wallet")
+@Table(name = "Wallet")
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
@@ -17,6 +17,8 @@ public class Wallet {
 
     private double balance;
 
+    @Transient
+    private long personId;
     public long getId() {
         return id;
     }
@@ -31,5 +33,13 @@ public class Wallet {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public long getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(long personId) {
+        this.personId = personId;
     }
 }

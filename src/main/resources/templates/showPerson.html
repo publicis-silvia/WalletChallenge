@@ -43,37 +43,43 @@
     </div>
 </nav>
 <div class="container">
-    <form class="form-horizontal" th:action="@{/postWallet}" th:object="${wallet}" method="post" >
+    <form class="form-horizontal" th:action="@{/}" th:object="${person}" method="post" >
         <fieldset>
 
             <!-- Form Name -->
-            <legend>WALLET</legend>
+            <legend>PERSON</legend>
 
             <!-- Text input-->
-            <div class="form-group" th:class="hidden">
-                <label class="col-md-4 control-label" for="personId">Name</label>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="id">ID</label>
                 <div class="col-md-4">
-                    <input readonly th:field="*{personId}" id="personId" name="personId" placeholder="personId" class="form-control input-md" required="true" type="number">
+                    <input readonly th:field="*{id}" id="id" name="id" placeholder="ID" class="form-control input-md" required="true" type="text">
                 </div>
             </div>
 
             <!-- Text input-->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="balance">Name</label>
+                <label class="col-md-4 control-label" for="name">Name</label>
                 <div class="col-md-4">
-                    <input th:field="*{balance}" id="balance" name="balance" placeholder="Name" class="form-control input-md" required="true" type="number">
+                    <input readonly th:field="*{name}" id="name" name="name" placeholder="Name" class="form-control input-md" required="true" type="text">
                 </div>
             </div>
 
-            <!-- Button -->
+            <!-- Text input-->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="addPerson">Add wallet to person</label>
+                <label class="col-md-4 control-label" for="birthday">Birthday</label>
                 <div class="col-md-4">
-                    <button id="addPerson" name="addPerson" class="btn btn-primary">Add</button>
+                    <input readonly th:field="*{birthday}" id="birthday" name="birthday" placeholder="Birthday" class="form-control input-md" required="" type="text">
                 </div>
             </div>
+
         </fieldset>
     </form>
+</div>
+
+<div class="container">
+    <h1>Don't have a wallet?</h1>
+    <a th:href="@{/redirectAddWalletPage(personId=${person.id})}" class="btn btn-info">Add wallet</a>
 </div>
 
 
