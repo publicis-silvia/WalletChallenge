@@ -6,7 +6,9 @@ import hello.demo.repository.ProductRepository;
 import hello.demo.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -23,69 +25,73 @@ public class ProductController {
     }
 
     @GetMapping("/getProducts")
-    public String list(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-                       @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model) {
-        model.addAttribute("products", service.getProducts(pageNumber, size));
+    public String list(Model model) {
+        model.addAttribute("products", service.getProducts());
 
         return "products";
     }
 
-
-//    @GetMapping("/redirectAddProductPage")
-//    public String addProductPage(){
-//        return "addProduct";
-//    }
-
-//    @RequestMapping(value = "/redirectAddProductPage", method = RequestMethod.GET)
-//    public String redirect() {
-//        return "addProduct";
-//    }
-//    @RequestMapping(value = "/addProductPage", method = RequestMethod.GET)
-//    public String finalPage() {
-//        return "addProduct";
-//    }
-
     @GetMapping("/redirectAddProductPage")
-    public String list2() {
+    public String list2(Model model) {
+        model.addAttribute("product", new Product());
         return "addProduct";
     }
 
 
     @PostMapping("/postProduct")
-    Product addProduct(@RequestBody Product newProduct) {
-        return repository.save(newProduct);
+    public String addProduct(@ModelAttribute Product newProduct, Model model) {
+        repository.save(newProduct);
+        model.addAttribute("products", service.getProducts());
+
+        return "redirect:/getProducts";
     }
+
+
 
     // Single item
 
-    @GetMapping("/getProduct/{id}")
-    Product one(@PathVariable Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException(id));
+//    @GetMapping("/getProduct")
+//    public Product getProduct(@RequestParam Long id) {
+//        return repository.findById(id)
+//                .orElseThrow(() -> new ProductNotFoundException(id));
+//    }
+
+    @GetMapping("/getProduct")
+    public ModelAndView getProduct(@RequestParam Long productId) {
+        ModelAndView mav = new ModelAndView("showProduct");
+        Product product = repository.findById(productId).get();
+        mav.addObject("product", product);
+        return mav;
     }
 
-    @PutMapping("/putProduct/{id}")
-    Product replaceProduct(@RequestBody Product newProduct, @PathVariable Long id) {
+    @GetMapping("/putProduct")
+    public String replaceProduct(@ModelAttribute Product updatedProduct, Model model) {
 
-        return repository.findById(id)
+        repository.findById(updatedProduct.getId())
                 .map(product -> {
-                    product.setName(newProduct.getName());
+                    product.setName(updatedProduct.getName());
+                    product.setPrice(updatedProduct.getPrice());
                     return repository.save(product);
-                })
-                .orElseGet(() -> {
-                    newProduct.setId(id);
-                    return repository.save(newProduct);
                 });
+
+        model.addAttribute("products", service.getProducts());
+        return "redirect:/getProducts";
+    }
+    @GetMapping("/showUpdateFormProduct")
+    public ModelAndView showUpdateFormProduct(@RequestParam Long productId) {
+        ModelAndView mav = new ModelAndView("updateProduct");
+        Product product = repository.findById(productId).get();
+        mav.addObject("product", product);
+        return mav;
     }
 
-    @DeleteMapping("/deleteProduct")
-    String deleteProduct(@ModelAttribute(value="product") Product product, @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-                      @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model) {
+    @GetMapping("/deleteProduct")
+    public String deleteProduct(@RequestParam Long productId, Model model) {
 
-        repository.deleteById(product.getId());
-        model.addAttribute("products", service.getProducts(pageNumber, size));
+        repository.deleteById(productId);
+        model.addAttribute("products", service.getProducts());
 
 
-        return "redirect:products";
+        return "redirect:/getProducts";
     }
 }

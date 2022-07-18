@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name = "person")
+@Table(name = "Person")
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
@@ -19,11 +19,10 @@ public class Person {
     private long id;
     private String name;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate birthday;
+    private String birthday;
 
     @OneToOne
-    @JoinColumn(name = "wallet_id")
+    @JoinColumn(name = "walletId")
     private Wallet wallet;
 
     public String getName()
@@ -42,5 +41,21 @@ public class Person {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
     }
 }

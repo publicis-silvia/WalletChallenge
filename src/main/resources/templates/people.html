@@ -24,20 +24,20 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Add</a>
+                    <a class="nav-link" href="/products">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Update</a>
+                    <a class="nav-link" href="/people">Pepole</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Delete</a>
+                    <a class="nav-link" href="/wallet">Wallet</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<a class="nav-link" href="redirectAddProductPage">Add</a>
+<a class="nav-link" href="redirectAddPersonPage">Add</a>
 
 <div class="container">
     <div class="row">
@@ -46,26 +46,24 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Price</th>
-                    <th>Availability</th>
+                    <th>Birthday</th>
                     <th>Update</th>
                     <th>Delete</th>
                     <th>Details</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="product : ${products}">
-                    <td th:text="${product.name}">Name</td>
-                    <td th:text="${product.price}">Price</td>
-                    <td th:text="${product.available}">Price</td>
+                <tr th:each="person : ${people}">
+                    <td th:text="${person.name}">Name</td>
+                    <td th:text="${person.birthday}">Price</td>
                     <td>
-                        <a th:href="@{/showUpdateFormProduct(productId=${product.id})}" class="btn btn-info">Update</a>
+                        <a th:href="@{/showUpdateFormPerson(personId=${person.id})}" class="btn btn-info">Update</a>
                     </td>
                     <td>
-                        <a th:href="@{/deleteProduct(productId=${product.id})}" class="btn btn-danger ml-2">Delete</a>
+                        <a th:href="@{/deletePerson(personId=${person.id})}" class="btn btn-danger ml-2">Delete</a>
                     </td>>
                     <td>
-                        <a th:href="@{/getProduct(productId=${product.id})}" class="btn btn-info">Details</a>
+                        <a th:href="@{/getPerson(personId=${person.id})}" class="btn btn-info">Details</a>
                     </td>>
                 </tr>
                 </tbody>

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product")
+@Table(name = "Product")
 @NoArgsConstructor
 @Data
 public class Product {
@@ -14,6 +14,10 @@ public class Product {
     private long id;
     private String name;
     private double price;
+
+    @Transient
+    private Availability available;
+
 
     public long getId() {
         return id;
@@ -38,4 +42,13 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public Availability getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Availability available) {
+        this.available = available;
+    }
 }
+
