@@ -1,11 +1,12 @@
 package hello.demo.service;
 
+import hello.demo.entity.Availability;
 import hello.demo.entity.Person;
-import hello.demo.frontend.Page;
-import hello.demo.frontend.Paged;
-import hello.demo.frontend.Paging;
+import hello.demo.entity.Product;
 import hello.demo.repository.PersonRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,18 +19,10 @@ public class PersonService {
         this.repository = repository;
     }
 
-    public Paged<Person> getPeople(int pageNumber, int size) {
+    public List<Person> getPeople() {
+        List<Person> people = repository.findAll();
 
-        List<Person> people =  repository.findAll();
 
-        List<Person> paged = people.stream()
-                .skip(pageNumber)
-                .limit(size)
-                .collect(Collectors.toList());
-
-        int totalPages = people.size() / size;
-        return new Paged<>(new Page<>(paged, totalPages), Paging.of(totalPages, pageNumber, size));
-
+        return people;
     }
-
 }

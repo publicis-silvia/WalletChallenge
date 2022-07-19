@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -41,39 +42,47 @@
         </div>
     </div>
 </nav>
+<div class="container">
+    <form class="form-horizontal" th:action="@{/postProduct}" th:object="${product}" method="post" >
+        <fieldset>
 
-<form class="form-horizontal" th:action="@{/addProduct}" th:object="${product}" method="post" >
-    <fieldset>
+            <!-- Form Name -->
+            <legend>PRODUCT</legend>
 
-        <!-- Form Name -->
-        <legend>PRODUCT</legend>
-
-        <!-- Text input-->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="name">Name</label>
-            <div class="col-md-4">
-                <input id="name" name="name" placeholder="Name" class="form-control input-md" required="" type="text">
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="name">Name</label>
+                <div class="col-md-4">
+                    <input th:field="*{name}" id="name" name="name" placeholder="Name" class="form-control input-md" required="true" type="text">
+                </div>
             </div>
-        </div>
 
-        <!-- Text input-->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="price">Price</label>
-            <div class="col-md-4">
-                <input   id="price" name="price" placeholder="Price" class="form-control input-md" required="" type="text">
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="price">Price</label>
+                <div class="col-md-4">
+                    <input th:field="*{price}" id="price" name="price" placeholder="Price" class="form-control input-md" required="" type="number">
 
+                </div>
             </div>
-        </div>
 
-        <!-- Button -->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="addProduct">Add product</label>
-            <div class="col-md-4">
-                <button id="addProduct" name="addProduct" class="btn btn-primary">Button</button>
+            <!-- Button -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="addProduct">Add product</label>
+                <div class="col-md-4">
+                    <button id="addProduct" name="addProduct" class="btn btn-primary">Add</button>
+                </div>
             </div>
-        </div>
-    </fieldset>
-</form>
+        </fieldset>
+    </form>
+</div>
+
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+
 
 </body>
 </html>
