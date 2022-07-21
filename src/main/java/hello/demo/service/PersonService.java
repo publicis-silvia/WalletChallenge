@@ -1,14 +1,11 @@
 package hello.demo.service;
 
-import hello.demo.entity.Availability;
-import hello.demo.entity.Person;
-import hello.demo.entity.Product;
-import hello.demo.repository.PersonRepository;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import hello.demo.entity.Person;
+import hello.demo.repository.PersonRepository;
 
 @Service
 public class PersonService {
@@ -21,8 +18,25 @@ public class PersonService {
 
     public List<Person> getPeople() {
         List<Person> people = repository.findAll();
-
-
         return people;
     }
+
+	public Person getPersonById(Long personId) {
+		Person person = repository.getReferenceById(personId);
+		return person;
+	}
+
+	public long addPerson(Person newPerson) {
+		Person person = repository.save(newPerson);
+		return person.getId();
+	}
+
+	public void deletePersonById(Long personId) {
+		repository.deleteById(personId);
+	}
+
+	public void updatePerson(long personId, Person person) {
+		repository.deleteById(personId);
+		repository.save(person);
+	}
 }

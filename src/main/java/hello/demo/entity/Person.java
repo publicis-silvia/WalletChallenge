@@ -1,12 +1,16 @@
 package hello.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-
 import javax.persistence.Entity;
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.Date;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "Person")

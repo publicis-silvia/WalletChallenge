@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring Boot User Table</title>
+
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Spring Boot User Table</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Add</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Update</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Delete</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <form class="form-horizontal" th:action="@{/putWallet}" th:object="${wallet}" method="put" >
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend>WALLET</legend>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="id">ID</label>
+                <div class="col-md-4">
+                    <input readonly th:field="*{id}" id="id" name="name" placeholder="ID" class="form-control input-md" required="true" type="text">
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="balance">balance</label>
+                <div class="col-md-4">
+                    <input th:field="*{balance}" id="balance" name="balance" placeholder="balance" class="form-control input-md" type="text">
+                </div>
+            </div>
+
+            <!-- Button -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="updateWallet">Update wallet</label>
+                <div class="col-md-4">
+                    <button id="updateWallet" name="updateWallet" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+
+
+</body>
+</html>
