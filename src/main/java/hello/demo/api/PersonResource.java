@@ -27,13 +27,13 @@ public class PersonResource {
 
 	@RequestMapping("api/person/v1/get")
 	public List<Person> getAllPeople(Model model) {
-		List<Person> people = service.getPeople();
+		List<Person> people = service.getAll();
 		return people;
 	}
 
 	@RequestMapping("api/person/v1/get/{personId}")
 	public Person getPersonById(@PathVariable Long personId) {
-		Person person = service.getPersonById(personId);
+		Person person = service.getById(personId);
 
 		if (person == null)
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -44,7 +44,7 @@ public class PersonResource {
 	@RequestMapping(value = "api/person/v1/create", method = RequestMethod.POST)
 	public ResponseEntity<Object> addPerson(@RequestBody Person newPerson) {
 
-		long personId = service.addPerson(newPerson);
+		long personId = service.add(newPerson);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{personId}").buildAndExpand(personId)
 				.toUri();
 
@@ -53,7 +53,7 @@ public class PersonResource {
 
 	@RequestMapping(value = "api/person/v1/delete/{personId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> deletePersonById(@PathVariable Long personId) {
-		service.deletePersonById(personId);
+		service.deleteById(personId);
 
 		return ResponseEntity.noContent().build();
 	}
@@ -61,7 +61,7 @@ public class PersonResource {
 	@RequestMapping(value = "api/person/v1/update/{personId}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updatePerson(@PathVariable long personId, @RequestBody Person person) {
 
-		service.updatePerson(personId, person);
+		service.update(personId, person);
 
 		return ResponseEntity.noContent().build();
 	}

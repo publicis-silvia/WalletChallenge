@@ -26,13 +26,13 @@ public class TransactionResource {
 
 	@RequestMapping("api/transactions/v1/get")
 	public List<Transaction> getAllTransactions(Model model) {
-		List<Transaction> transactions = service.getTransactions();
+		List<Transaction> transactions = service.getAll();
 		return transactions;
 	}
 
 	@RequestMapping("api/transactions/v1/get/{transactionId}")
 	public Transaction getTransactionById(@PathVariable Long transactionId) {
-		Transaction transaction = service.getTransactionById(transactionId);
+		Transaction transaction = service.getById(transactionId);
 
 		if (transaction == null)
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -42,7 +42,7 @@ public class TransactionResource {
 
 	@RequestMapping(value = "api/transactions/v1/create", method = RequestMethod.POST)
 	public ResponseEntity<Object> addTransaction(@RequestBody Transaction newTransaction) {
-		long transactionId = service.addTransaction(newTransaction);
+		long transactionId = service.add(newTransaction);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{transactionId}")
 				.buildAndExpand(transactionId).toUri();
 
@@ -51,7 +51,7 @@ public class TransactionResource {
 
 	@RequestMapping(value = "api/transactions/v1/delete/{transactionId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> deleteTransactionById(@PathVariable Long transactionId) {
-		service.deleteTransactionById(transactionId);
+		service.deleteById(transactionId);
 
 		return ResponseEntity.noContent().build();
 	}
@@ -59,7 +59,7 @@ public class TransactionResource {
 	@RequestMapping(value = "api/transactions/v1/update/{transactionId}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updateTransaction(@PathVariable long transactionId,
 			@RequestBody Transaction transaction) {
-		service.updateTransaction(transactionId, transaction);
+		service.update(transactionId, transaction);
 
 		return ResponseEntity.noContent().build();
 	}
@@ -67,7 +67,7 @@ public class TransactionResource {
 	@RequestMapping(value = "api/transactions/v1/sale", method = RequestMethod.POST)
 	public ResponseEntity<Object> sale(@RequestBody Transaction newTransaction) {
 		// TODO: implement sale
-		long transactionId = service.addTransaction(newTransaction);
+		long transactionId = service.add(newTransaction);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{transactionId}")
 				.buildAndExpand(transactionId).toUri();
 
@@ -77,7 +77,7 @@ public class TransactionResource {
 	@RequestMapping(value = "api/transactions/v1/purchase", method = RequestMethod.POST)
 	public ResponseEntity<Object> purchase(@RequestBody Transaction newTransaction) {
 		// TODO: implement purchase
-		long transactionId = service.addTransaction(newTransaction);
+		long transactionId = service.add(newTransaction);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{transactionId}")
 				.buildAndExpand(transactionId).toUri();
 

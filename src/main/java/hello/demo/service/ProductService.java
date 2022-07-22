@@ -12,7 +12,7 @@ import hello.demo.repository.ProductRepository;
 import hello.demo.repository.TransactionRepository;
 
 @Service
-public class ProductService {
+public class ProductService implements DataAccessService<Product> {
 
     private final ProductRepository repository;
     private final TransactionRepository transactionRepository;
@@ -22,38 +22,43 @@ public class ProductService {
         this.transactionRepository = transactionRepository;
     }
 
-    public List<Product> getProducts() {
-        List<Product> products = repository.findAll();
+	@Override
+	public List<Product> getAll() {
+		List<Product> products = repository.findAll();
 
-        List<Product> finalProducts = new ArrayList<>();
-        for (Product p: products) {
-            if (!transactionRepository.existsByProductId(p)){
-                p.setAvailable(Availability.AVAILABLE);
-            }else{
-                p.setAvailable(Availability.NOT_AVAILABLE);
-            }
+		List<Product> finalProducts = new ArrayList<>();
+		for (Product p : products) {
+			if (!transactionRepository.existsByProductId(p)) {
+				p.setAvailable(Availability.AVAILABLE);
+			} else {
+				p.setAvailable(Availability.NOT_AVAILABLE);
+			}
 
-            finalProducts.add(p);
-        }
+			finalProducts.add(p);
+		}
 
-        return finalProducts;
-    }
+		return finalProducts;
+	}
 
-	public Product getProductById(Long productId) {
+	@Override
+	public Product getById(Long productId) {
 		Optional<Product> product = repository.findById(productId);
 		return product.get();
 	}
 
-	public long addProduct(Product newProduct) {
+	@Override
+	public long add(Product newProduct) {
 		Product product = repository.save(newProduct);
 		return product.getId();
 	}
 
-	public void deleteProductById(Long productId) {
+	@Override
+	public void deleteById(Long productId) {
 		repository.deleteById(productId);
 	}
 
-	public void updateProduct(long productId, Product product) {
+	@Override
+	public void update(long productId, Product product) {
 		repository.deleteById(productId);
 		repository.save(product);
 	}

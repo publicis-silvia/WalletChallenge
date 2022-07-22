@@ -6,7 +6,7 @@ import java.util.Optional;
 import hello.demo.entity.Wallet;
 import hello.demo.repository.WalletRepository;
 
-public class WalletService {
+public class WalletService implements DataAccessService<Wallet> {
 
 	private final WalletRepository repository;
 
@@ -15,26 +15,31 @@ public class WalletService {
 		this.repository = repository;
 	}
 
-	public List<Wallet> getWallets() {
+	@Override
+	public List<Wallet> getAll() {
 		List<Wallet> wallets = repository.findAll();
 		return wallets;
 	}
 
-	public Wallet getWalletById(Long walletId) {
+	@Override
+	public Wallet getById(Long walletId) {
 		Optional<Wallet> wallet = repository.findById(walletId);
 		return wallet.get();
 	}
 
-	public long addWallet(Wallet newWallet) {
+	@Override
+	public long add(Wallet newWallet) {
 		Wallet wallet = repository.save(newWallet);
 		return wallet.getId();
 	}
 
-	public void deleteWalletById(Long walletId) {
+	@Override
+	public void deleteById(Long walletId) {
 		repository.deleteById(walletId);
 	}
 
-	public void updateWallet(long walletId, Wallet wallet) {
+	@Override
+	public void update(long walletId, Wallet wallet) {
 		repository.deleteById(walletId);
 		repository.save(wallet);
 	}

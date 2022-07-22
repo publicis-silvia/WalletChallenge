@@ -9,7 +9,7 @@ import hello.demo.entity.Person;
 import hello.demo.repository.PersonRepository;
 
 @Service
-public class PersonService {
+public class PersonService implements DataAccessService<Person> {
 
     private final PersonRepository repository;
 
@@ -17,26 +17,31 @@ public class PersonService {
         this.repository = repository;
     }
 
-    public List<Person> getPeople() {
-        List<Person> people = repository.findAll();
-        return people;
-    }
+	@Override
+	public List<Person> getAll() {
+		List<Person> people = repository.findAll();
+		return people;
+	}
 
-	public Person getPersonById(Long personId) {
+	@Override
+	public Person getById(Long personId) {
 		Optional<Person> person = repository.findById(personId);
 		return person.get();
 	}
 
-	public long addPerson(Person newPerson) {
+	@Override
+	public long add(Person newPerson) {
 		Person person = repository.save(newPerson);
 		return person.getId();
 	}
 
-	public void deletePersonById(Long personId) {
+	@Override
+	public void deleteById(Long personId) {
 		repository.deleteById(personId);
 	}
 
-	public void updatePerson(long personId, Person person) {
+	@Override
+	public void update(long personId, Person person) {
 		repository.deleteById(personId);
 		repository.save(person);
 	}

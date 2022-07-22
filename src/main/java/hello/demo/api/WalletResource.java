@@ -25,13 +25,13 @@ public class WalletResource {
 
 	@RequestMapping("api/wallets/v1/get")
 	public List<Wallet> getAllWallets(Model model) {
-		List<Wallet> wallets = service.getWallets();
+		List<Wallet> wallets = service.getAll();
 		return wallets;
 	}
 
 	@RequestMapping("api/wallets/v1/get/{walletId}")
 	public Wallet getWalletById(@PathVariable Long walletId) {
-		Wallet wallet = service.getWalletById(walletId);
+		Wallet wallet = service.getById(walletId);
 
 		if (wallet == null)
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -41,7 +41,7 @@ public class WalletResource {
 
 	@RequestMapping("api/wallets/v1/get/{walletId}/statement")
 	public Wallet getWalletStatement(@PathVariable Long walletId) {
-		Wallet wallet = service.getWalletById(walletId);
+		Wallet wallet = service.getById(walletId);
 
 		if (wallet == null)
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -51,7 +51,7 @@ public class WalletResource {
 
 	@RequestMapping(value = "api/wallets/v1/create", method = RequestMethod.POST)
 	public ResponseEntity<Object> addWallet(@RequestBody Wallet newWallet) {
-		long walletId = service.addWallet(newWallet);
+		long walletId = service.add(newWallet);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{walletId}").buildAndExpand(walletId)
 				.toUri();
 
@@ -60,14 +60,14 @@ public class WalletResource {
 
 	@RequestMapping(value = "api/wallets/v1/delete/{walletId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> deleteWalletById(@PathVariable Long walletId) {
-		service.deleteWalletById(walletId);
+		service.deleteById(walletId);
 
 		return ResponseEntity.noContent().build();
 	}
 
 	@RequestMapping(value = "api/wallets/v1/update/{walletId}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updateWallet(@PathVariable long walletId, @RequestBody Wallet wallet) {
-		service.updateWallet(walletId, wallet);
+		service.update(walletId, wallet);
 
 		return ResponseEntity.noContent().build();
 	}
@@ -75,7 +75,7 @@ public class WalletResource {
 	@RequestMapping(value = "api/wallets/v1/update/{operation}/{walletId}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updateWalletBalance(@PathVariable long walletId, @RequestBody Wallet wallet) {
 		// TODO: Implement balance update, add or deduct
-		service.updateWallet(walletId, wallet);
+		service.update(walletId, wallet);
 
 		return ResponseEntity.noContent().build();
 	}

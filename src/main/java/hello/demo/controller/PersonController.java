@@ -1,12 +1,16 @@
 package hello.demo.controller;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
 import hello.demo.entity.Person;
 import hello.demo.repository.PersonRepository;
 import hello.demo.service.PersonService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class PersonController {
@@ -22,7 +26,7 @@ public class PersonController {
 
     @GetMapping("/getPeople")
     public String list(Model model) {
-        model.addAttribute("people", service.getPeople());
+		model.addAttribute("people", service.getAll());
 
         return "people";
     }
@@ -37,7 +41,7 @@ public class PersonController {
     @PostMapping("/postPerson")
     public String addPerson(@ModelAttribute Person newPerson, Model model) {
         repository.save(newPerson);
-        model.addAttribute("people", service.getPeople());
+		model.addAttribute("people", service.getAll());
 
         return "redirect:/getPeople";
     }
@@ -67,7 +71,7 @@ public class PersonController {
                     return repository.save(person);
                 });
 
-        model.addAttribute("people", service.getPeople());
+		model.addAttribute("people", service.getAll());
         return "redirect:/getPeople";
     }
     @GetMapping("/showUpdateFormPerson")
@@ -82,7 +86,7 @@ public class PersonController {
     public String deletePerson(@RequestParam Long personId, Model model) {
 
         repository.deleteById(personId);
-        model.addAttribute("people", service.getPeople());
+		model.addAttribute("people", service.getAll());
 
 
         return "redirect:/getPeople";
