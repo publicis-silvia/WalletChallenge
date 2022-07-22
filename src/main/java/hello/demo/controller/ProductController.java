@@ -1,16 +1,16 @@
 package hello.demo.controller;
 
-import hello.demo.entity.Product;
-import hello.demo.exceptions.ProductNotFoundException;
-import hello.demo.repository.ProductRepository;
-import hello.demo.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import hello.demo.entity.Product;
+import hello.demo.repository.ProductRepository;
+import hello.demo.service.ProductService;
 
 @Controller
 public class ProductController {
@@ -26,7 +26,7 @@ public class ProductController {
 
     @GetMapping("/getProducts")
     public String list(Model model) {
-        model.addAttribute("products", service.getProducts());
+		model.addAttribute("products", service.getAll());
 
         return "products";
     }
@@ -41,7 +41,7 @@ public class ProductController {
     @PostMapping("/postProduct")
     public String addProduct(@ModelAttribute Product newProduct, Model model) {
         repository.save(newProduct);
-        model.addAttribute("products", service.getProducts());
+		model.addAttribute("products", service.getAll());
 
         return "redirect:/getProducts";
     }
@@ -74,7 +74,7 @@ public class ProductController {
                     return repository.save(product);
                 });
 
-        model.addAttribute("products", service.getProducts());
+		model.addAttribute("products", service.getAll());
         return "redirect:/getProducts";
     }
     @GetMapping("/showUpdateFormProduct")
@@ -89,8 +89,7 @@ public class ProductController {
     public String deleteProduct(@RequestParam Long productId, Model model) {
 
         repository.deleteById(productId);
-        model.addAttribute("products", service.getProducts());
-
+		model.addAttribute("products", service.getAll());
 
         return "redirect:/getProducts";
     }

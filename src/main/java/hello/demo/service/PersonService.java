@@ -1,17 +1,15 @@
 package hello.demo.service;
 
-import hello.demo.entity.Availability;
-import hello.demo.entity.Person;
-import hello.demo.entity.Product;
-import hello.demo.repository.PersonRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import hello.demo.entity.Person;
+import hello.demo.repository.PersonRepository;
 
 @Service
-public class PersonService {
+public class PersonService implements DataAccessService<Person> {
 
     private final PersonRepository repository;
 
@@ -19,10 +17,32 @@ public class PersonService {
         this.repository = repository;
     }
 
-    public List<Person> getPeople() {
-        List<Person> people = repository.findAll();
+	@Override
+	public List<Person> getAll() {
+		List<Person> people = repository.findAll();
+		return people;
+	}
 
+	@Override
+	public Person getById(Long personId) {
+		Optional<Person> person = repository.findById(personId);
+		return person.get();
+	}
 
-        return people;
-    }
+	@Override
+	public long add(Person newPerson) {
+		Person person = repository.save(newPerson);
+		return person.getId();
+	}
+
+	@Override
+	public void deleteById(Long personId) {
+		repository.deleteById(personId);
+	}
+
+	@Override
+	public void update(long personId, Person person) {
+		repository.deleteById(personId);
+		repository.save(person);
+	}
 }

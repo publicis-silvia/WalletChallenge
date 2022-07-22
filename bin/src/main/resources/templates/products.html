@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Spring Boot User Table</title>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Spring Boot User Table</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Add</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Update</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Delete</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<a class="nav-link" href="redirectAddProductPage">Add</a>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 mt-5 mb-5">
+            <table id="example" class="table table-bordered" style="width: 100%">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Availability</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.name}">Name</td>
+                    <td th:text="${product.price}">Price</td>
+                    <td th:text="${product.available}">Price</td>
+                    <td>
+                        <a th:href="@{/showUpdateFormProduct(productId=${product.id})}" class="btn btn-info">Update</a>
+                    </td>
+                    <td>
+                        <a th:href="@{/deleteProduct(productId=${product.id})}" class="btn btn-danger ml-2">Delete</a>
+                    </td>>
+                    <td>
+                        <a th:href="@{/getProduct(productId=${product.id})}" class="btn btn-info">Details</a>
+                    </td>>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+
+</body>
+</html>
