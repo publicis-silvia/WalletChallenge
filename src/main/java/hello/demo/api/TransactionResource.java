@@ -14,23 +14,23 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import hello.demo.entity.Transaction;
-import hello.demo.service.TransactionService;
+import hello.demo.service.DataAccessService;
 
 public class TransactionResource {
 
-	private final TransactionService service;
+	private final DataAccessService<Transaction> service;
 
-	TransactionResource(TransactionService service) {
+	TransactionResource(DataAccessService<Transaction> service) {
 		this.service = service;
 	}
 
-	@RequestMapping("api/transactions/v1/get")
+	@RequestMapping("api/v1/transactions")
 	public List<Transaction> getAllTransactions(Model model) {
 		List<Transaction> transactions = service.getAll();
 		return transactions;
 	}
 
-	@RequestMapping("api/transactions/v1/get/{transactionId}")
+	@RequestMapping("api/v1/transactions/{transactionId}")
 	public Transaction getTransactionById(@PathVariable Long transactionId) {
 		Transaction transaction = service.getById(transactionId);
 
@@ -40,23 +40,24 @@ public class TransactionResource {
 		return transaction;
 	}
 
-	@RequestMapping(value = "api/transactions/v1/create", method = RequestMethod.POST)
+	@RequestMapping(value = "api/v1/transactions", method = RequestMethod.POST)
 	public ResponseEntity<Object> addTransaction(@RequestBody Transaction newTransaction) {
 		long transactionId = service.add(newTransaction);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{transactionId}")
-				.buildAndExpand(transactionId).toUri();
+				.buildAndExpand(transactionId)
+				.toUri();
 
 		return ResponseEntity.created(location).build();
 	}
 
-	@RequestMapping(value = "api/transactions/v1/delete/{transactionId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "api/v1/transactions/{transactionId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> deleteTransactionById(@PathVariable Long transactionId) {
 		service.deleteById(transactionId);
 
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/transactions/v1/update/{transactionId}", method = RequestMethod.PUT)
+	@RequestMapping(value = "api/v1/transactions/{transactionId}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updateTransaction(@PathVariable long transactionId,
 			@RequestBody Transaction transaction) {
 		service.update(transactionId, transaction);
@@ -64,7 +65,7 @@ public class TransactionResource {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/transactions/v1/sale", method = RequestMethod.POST)
+	@RequestMapping(value = "api/v1/transactions/sale", method = RequestMethod.POST)
 	public ResponseEntity<Object> sale(@RequestBody Transaction newTransaction) {
 		// TODO: implement sale
 		long transactionId = service.add(newTransaction);
@@ -74,7 +75,7 @@ public class TransactionResource {
 		return ResponseEntity.created(location).build();
 	}
 
-	@RequestMapping(value = "api/transactions/v1/purchase", method = RequestMethod.POST)
+	@RequestMapping(value = "api/v1/transactions/purchase", method = RequestMethod.POST)
 	public ResponseEntity<Object> purchase(@RequestBody Transaction newTransaction) {
 		// TODO: implement purchase
 		long transactionId = service.add(newTransaction);

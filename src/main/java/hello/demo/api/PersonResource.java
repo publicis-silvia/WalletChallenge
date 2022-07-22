@@ -15,23 +15,23 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import hello.demo.entity.Person;
-import hello.demo.service.PersonService;
+import hello.demo.service.DataAccessService;
 
 @RestController
 public class PersonResource {
-	private final PersonService service;
+	private final DataAccessService<Person> service;
 
-	PersonResource(PersonService service) {
+	PersonResource(DataAccessService<Person> service) {
 		this.service = service;
 	}
 
-	@RequestMapping("api/person/v1/get")
+	@RequestMapping("api/v1/people")
 	public List<Person> getAllPeople(Model model) {
 		List<Person> people = service.getAll();
 		return people;
 	}
 
-	@RequestMapping("api/person/v1/get/{personId}")
+	@RequestMapping("api/v1/people/{personId}")
 	public Person getPersonById(@PathVariable Long personId) {
 		Person person = service.getById(personId);
 
@@ -41,7 +41,7 @@ public class PersonResource {
 		return person;
 	}
 
-	@RequestMapping(value = "api/person/v1/create", method = RequestMethod.POST)
+	@RequestMapping(value = "api/v1/people", method = RequestMethod.POST)
 	public ResponseEntity<Object> addPerson(@RequestBody Person newPerson) {
 
 		long personId = service.add(newPerson);
@@ -51,14 +51,14 @@ public class PersonResource {
 		return ResponseEntity.created(location).build();
 	}
 
-	@RequestMapping(value = "api/person/v1/delete/{personId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "api/v1/people/{personId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> deletePersonById(@PathVariable Long personId) {
 		service.deleteById(personId);
 
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/person/v1/update/{personId}", method = RequestMethod.PUT)
+	@RequestMapping(value = "api/v1/people/{personId}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updatePerson(@PathVariable long personId, @RequestBody Person person) {
 
 		service.update(personId, person);

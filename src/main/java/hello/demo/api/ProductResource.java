@@ -15,24 +15,24 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import hello.demo.entity.Product;
-import hello.demo.service.ProductService;
+import hello.demo.service.DataAccessService;
 
 @RestController
 public class ProductResource {
 
-	private final ProductService service;
+	private final DataAccessService<Product> service;
 
-	ProductResource(ProductService service) {
+	ProductResource(DataAccessService<Product> service) {
 		this.service = service;
 	}
 
-	@RequestMapping("api/products/v1/get")
+	@RequestMapping("api/v1/products")
 	public List<Product> getAllProducts(Model model) {
 		List<Product> products = service.getAll();
 		return products;
 	}
 
-	@RequestMapping("api/products/v1/get/{ProductId}")
+	@RequestMapping("api/v1/products/{productId}")
 	public Product getProductById(@PathVariable Long productId) {
 		Product product = service.getById(productId);
 
@@ -42,7 +42,7 @@ public class ProductResource {
 		return product;
 	}
 
-	@RequestMapping("api/products/v1/get/owner/{OwnerId}")
+	@RequestMapping("api/v1/products/owner/{ownerId}")
 	public Product getProductsByOwner(@PathVariable Long ownerId) {
 		// TODO: Implement get products by owner
 		Product product = service.getById(ownerId);
@@ -53,23 +53,23 @@ public class ProductResource {
 		return product;
 	}
 
-	@RequestMapping(value = "api/products/v1/create", method = RequestMethod.POST)
+	@RequestMapping(value = "api/v1/products", method = RequestMethod.POST)
 	public ResponseEntity<Object> addProduct(@RequestBody Product newProduct) {
 		long productId = service.add(newProduct);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{ProductId}").buildAndExpand(productId)
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{productId}").buildAndExpand(productId)
 				.toUri();
 
 		return ResponseEntity.created(location).build();
 	}
 
-	@RequestMapping(value = "api/products/v1/delete/{ProductId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "api/v1/products/{productId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> deleteProductById(@PathVariable Long productId) {
 		service.deleteById(productId);
 
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/products/v1/update/{ProductId}", method = RequestMethod.PUT)
+	@RequestMapping(value = "api/v1/products/{productId}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updateProduct(@PathVariable long productId, @RequestBody Product product) {
 		service.update(productId, product);
 
