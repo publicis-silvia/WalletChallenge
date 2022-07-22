@@ -1,6 +1,7 @@
 package hello.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,8 @@ public class PersonService {
     }
 
 	public Person getPersonById(Long personId) {
-		Person person = repository.getReferenceById(personId);
-		return person;
+		Optional<Person> person = repository.findById(personId);
+		return person.get();
 	}
 
 	public long addPerson(Person newPerson) {

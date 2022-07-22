@@ -26,13 +26,13 @@ public class ProductResource {
 		this.service = service;
 	}
 
-	@RequestMapping("api/v1/products")
+	@RequestMapping("api/products/v1/get")
 	public List<Product> getAllProducts(Model model) {
 		List<Product> products = service.getProducts();
 		return products;
 	}
 
-	@RequestMapping("api/v1/products/{ProductId}")
+	@RequestMapping("api/products/v1/get/{ProductId}")
 	public Product getProductById(@PathVariable Long productId) {
 		Product product = service.getProductById(productId);
 
@@ -42,7 +42,18 @@ public class ProductResource {
 		return product;
 	}
 
-	@RequestMapping(value = "api/v1/products", method = RequestMethod.POST)
+	@RequestMapping("api/products/v1/get/owner/{OwnerId}")
+	public Product getProductsByOwner(@PathVariable Long ownerId) {
+		// TODO: Implement get products by owner
+		Product product = service.getProductById(ownerId);
+
+		if (product == null)
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+		return product;
+	}
+
+	@RequestMapping(value = "api/products/v1/create", method = RequestMethod.POST)
 	public ResponseEntity<Object> addProduct(@RequestBody Product newProduct) {
 		long productId = service.addProduct(newProduct);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{ProductId}").buildAndExpand(productId)
@@ -51,14 +62,14 @@ public class ProductResource {
 		return ResponseEntity.created(location).build();
 	}
 
-	@RequestMapping(value = "api/v1/products/{ProductId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "api/products/v1/delete/{ProductId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> deleteProductById(@PathVariable Long productId) {
 		service.deleteProductById(productId);
 
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/v1/products/{ProductId}", method = RequestMethod.PUT)
+	@RequestMapping(value = "api/products/v1/update/{ProductId}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updateProduct(@PathVariable long productId, @RequestBody Product product) {
 		service.updateProduct(productId, product);
 

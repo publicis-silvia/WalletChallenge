@@ -25,13 +25,13 @@ public class PersonResource {
 		this.service = service;
 	}
 
-	@RequestMapping("api/v1/people")
+	@RequestMapping("api/person/v1/get")
 	public List<Person> getAllPeople(Model model) {
 		List<Person> people = service.getPeople();
 		return people;
 	}
 
-	@RequestMapping("api/v1/people/{personId}")
+	@RequestMapping("api/person/v1/get/{personId}")
 	public Person getPersonById(@PathVariable Long personId) {
 		Person person = service.getPersonById(personId);
 
@@ -41,7 +41,7 @@ public class PersonResource {
 		return person;
 	}
 
-	@RequestMapping(value = "api/v1/people", method = RequestMethod.POST)
+	@RequestMapping(value = "api/person/v1/create", method = RequestMethod.POST)
 	public ResponseEntity<Object> addPerson(@RequestBody Person newPerson) {
 
 		long personId = service.addPerson(newPerson);
@@ -51,14 +51,14 @@ public class PersonResource {
 		return ResponseEntity.created(location).build();
 	}
 
-	@RequestMapping(value = "api/v1/people/{personId}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "api/person/v1/delete/{personId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> deletePersonById(@PathVariable Long personId) {
 		service.deletePersonById(personId);
 
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "api/v1/people/{personId}", method = RequestMethod.PUT)
+	@RequestMapping(value = "api/person/v1/update/{personId}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updatePerson(@PathVariable long personId, @RequestBody Person person) {
 
 		service.updatePerson(personId, person);

@@ -2,6 +2,7 @@ package hello.demo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -39,8 +40,8 @@ public class ProductService {
     }
 
 	public Product getProductById(Long productId) {
-		Product product = repository.getReferenceById(productId);
-		return product;
+		Optional<Product> product = repository.findById(productId);
+		return product.get();
 	}
 
 	public long addProduct(Product newProduct) {
